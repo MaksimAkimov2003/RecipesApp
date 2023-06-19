@@ -10,6 +10,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/screens" />
+            <option value="$PROJECT_DIR$/screens/details_screen" />
+            <option value="$PROJECT_DIR$/screens/main_screen" />
           </set>
         </option>
       </GradleProjectSettings>

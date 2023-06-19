@@ -14,3 +14,6 @@ dependencyResolutionManagement {
 }
 rootProject.name = "RecipesApp"
 include ':app'
+include ':screens'
+include ':screens:main_screen'
+include ':screens:details_screen'

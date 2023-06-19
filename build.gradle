@@ -1,4 +1,18 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
+buildscript {
+	apply from: 'build-system/extensions/dependencies.gradle'
+	apply from: 'build-system/extensions/versions.gradle'
+	apply from: 'build-system/extensions/plugins.gradle'
+	repositories {
+		google()
+		mavenCentral()
+	}
+	dependencies {
+		classpath Dependencies.GRADLE
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.20-RC"
+		classpath Dependencies.GOOGLE_SERVICES
+	}
+}
+
 plugins {
 	id 'com.android.application' version '7.4.2' apply false
 	id 'com.android.library' version '7.4.2' apply false
