@@ -1,5 +1,6 @@
 apply plugin: Plugins.ANDROID_LIBRARY
 apply plugin: Plugins.KOTLIN_ANDROID
+apply plugin: Plugins.KOTLIN_KAPT
 
 apply from: "$rootDir/build-system/module-types/android-library.gradle"
 
@@ -12,4 +13,6 @@ dependencies {
 	implementation Dependencies.RETROFIT
 	implementation Dependencies.GSON
 	implementation Dependencies.GSON_CONVERTER
+	implementation Dependencies.KOIN_ANDROID
+	implementation Dependencies.KOIN_CORE
 }

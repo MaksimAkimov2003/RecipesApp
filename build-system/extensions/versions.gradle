@@ -33,4 +33,6 @@ ext.Versions =
 		GOOGLE_SERVICES  : "4.3.10",
 
 		COROUTINE        : "1.6.2",
+
+		KOIN             : "3.3.2",
 	]

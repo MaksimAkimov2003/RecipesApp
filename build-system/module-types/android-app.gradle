@@ -13,6 +13,7 @@ android {
 		vectorDrawables {
 			useSupportLibrary true
 		}
+		buildConfigField "String", "BASE_URL", "\"https://test.kode-t.ru/\""
 	}
 
 	buildTypes {

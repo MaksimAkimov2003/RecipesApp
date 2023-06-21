@@ -16,7 +16,7 @@ data class RecipeModel(
 	val lastUpdated: Int,
 
 	@SerializedName("description")
-	val description: String,
+	val description: String?,
 
 	@SerializedName("instructions")
 	val instruction: String,

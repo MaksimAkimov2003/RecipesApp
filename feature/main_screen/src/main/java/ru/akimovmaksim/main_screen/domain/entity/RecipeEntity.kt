@@ -5,7 +5,7 @@ data class RecipeEntity(
 	val name: String,
 	val images: List<String>,
 	val lastUpdated: Int,
-	val description: String,
+	val description: String?,
 	val instruction: String,
 	val difficulty: Int
 )
