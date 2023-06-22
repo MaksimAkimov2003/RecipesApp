@@ -11,6 +11,6 @@
 		parent="Widget.AppCompat.TextView">
 		<item name="android:textColor">@color/black</item>
 		<item name="android:textSize">@dimen/text_simple_size</item>
-		<item name="android:fontFamily">@font/montserrat_light</item>
+		<item name="android:fontFamily">@font/montserrat_regular</item>
 	</style>
 </resources>

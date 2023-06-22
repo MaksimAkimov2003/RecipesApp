@@ -30,6 +30,7 @@
 			android:layout_height="wrap_content"
 			android:layout_marginHorizontal="@dimen/margin_16"
 			android:layout_marginTop="@dimen/margin_16"
+			android:maxLines="3"
 			app:layout_constraintStart_toEndOf="@+id/recipe_image"
 			app:layout_constraintTop_toTopOf="parent"
 			app:layout_constraintEnd_toEndOf="parent"
@@ -41,10 +42,11 @@
 			android:layout_height="0dp"
 			android:layout_marginHorizontal="@dimen/margin_16"
 			android:layout_marginTop="@dimen/margin_8"
+			android:maxLines="2"
 			app:layout_constraintStart_toEndOf="@+id/recipe_image"
 			app:layout_constraintEnd_toEndOf="parent"
 			app:layout_constraintTop_toBottomOf="@+id/header"
-			app:layout_constraintBottom_toBottomOf="@id/recipe_image"
+			app:layout_constraintBottom_toBottomOf="parent"
 			tools:text="@string/test_description"
 			style="@style/SimpleText"/>
 	</androidx.constraintlayout.widget.ConstraintLayout>

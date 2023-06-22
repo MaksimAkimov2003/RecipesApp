@@ -16,5 +16,5 @@
 
 	<!-- Text size -->
 	<dimen name="text_header_size">14sp</dimen>
-	<dimen name="text_simple_size">12sp</dimen>
+	<dimen name="text_simple_size">14sp</dimen>
 </resources>

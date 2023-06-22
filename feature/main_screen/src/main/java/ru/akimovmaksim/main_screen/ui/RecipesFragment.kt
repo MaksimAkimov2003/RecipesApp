@@ -14,7 +14,7 @@ import ru.akimovmaksim.main_screen.presentation.RecipesViewModel
 import ru.akimovmaksim.main_screen.presentation.RecipesViewModelState
 import ru.akimovmaksim.main_screen.ui.recycler.RecipesAdapter
 
-class RecipesFragment : Fragment(R.layout.recipes_fragment) {
+class RecipesFragment() : Fragment(R.layout.recipes_fragment) {
 
 	private lateinit var binding: RecipesFragmentBinding
 
@@ -63,5 +63,4 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment) {
 		Toast.makeText(context, getString(ru.akimovmaksim.resources.R.string.error_message), Toast.LENGTH_SHORT)
 			.show()
 	}
-
 }
