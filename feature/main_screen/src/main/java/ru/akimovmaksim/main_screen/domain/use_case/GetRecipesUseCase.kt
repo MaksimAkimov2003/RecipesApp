@@ -3,7 +3,7 @@ package ru.akimovmaksim.main_screen.domain.use_case
 import ru.akimovmaksim.main_screen.domain.entity.RecipeEntity
 import ru.akimovmaksim.main_screen.domain.repository.RecipesRepository
 
-class GetRecipesUseCase constructor(
+class GetRecipesUseCase(
 	private val repository: RecipesRepository
 ) {
 

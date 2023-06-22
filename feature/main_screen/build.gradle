@@ -15,4 +15,7 @@ dependencies {
 	implementation Dependencies.GSON_CONVERTER
 	implementation Dependencies.KOIN_ANDROID
 	implementation Dependencies.KOIN_CORE
+	implementation Dependencies.GLIDE
+
+	implementation project(':core:resources')
 }

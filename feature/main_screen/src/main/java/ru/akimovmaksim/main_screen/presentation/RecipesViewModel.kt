@@ -1,5 +1,7 @@
 package ru.akimovmaksim.main_screen.presentation
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
@@ -9,9 +11,17 @@ class RecipesViewModel(
 	private val getRecipesUseCase: GetRecipesUseCase
 ) : ViewModel() {
 
-	fun getRecipes() {
+	private val _state = MutableLiveData<RecipesViewModelState>(RecipesViewModelState.Initial)
+	val state: LiveData<RecipesViewModelState> = _state
+
+	fun loadRecipes() {
 		viewModelScope.launch {
-			getRecipesUseCase.invoke()
+			try {
+				val recipes = getRecipesUseCase.invoke()
+				_state.value = RecipesViewModelState.Content(recipes)
+			} catch (e: Exception) {
+				_state.value = RecipesViewModelState.ConnectionError
+			}
 		}
 	}
 
