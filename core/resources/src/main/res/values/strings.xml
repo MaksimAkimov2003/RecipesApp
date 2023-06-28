@@ -3,4 +3,7 @@
 	<string name="test_name">Pan Roasted Chicken with Lemon, Garlic, Green Beans and Red Potatoes</string>
 	<string name="test_description">Pan-roasted chicken with lemon, garlic, green beans and red potatoes</string>
 	<string name="error_message">Connection Error</string>
+	<string name="by_default">По умолчанию</string>
+	<string name="by_name">По названию</string>
+	<string name="by_date">По дате</string>
 </resources>

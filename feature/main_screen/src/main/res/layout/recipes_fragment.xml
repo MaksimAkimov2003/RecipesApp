@@ -6,6 +6,41 @@
 	android:layout_height="match_parent"
 	android:orientation="vertical">
 
+	<com.google.android.material.appbar.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:orientation="vertical"
+		android:background="@color/dark_grey">
+
+		<com.google.android.material.textfield.TextInputLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_marginHorizontal="@dimen/margin_16"
+			android:layout_marginTop="@dimen/margin_16"
+			app:endIconMode="clear_text"
+			app:endIconDrawable="@drawable/baseline_close_24"
+			app:boxCornerRadiusTopEnd="@dimen/radius_10"
+			app:boxCornerRadiusTopStart="@dimen/radius_10"
+			app:boxCornerRadiusBottomStart="@dimen/radius_10"
+			app:boxCornerRadiusBottomEnd="@dimen/radius_10">
+
+			<com.google.android.material.textfield.TextInputEditText
+				android:id="@+id/search_field"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:backgroundTint="@color/light_grey"
+				android:textAppearance="@style/SimpleText"/>
+
+		</com.google.android.material.textfield.TextInputLayout>
+
+		<Spinner
+			android:id="@+id/spinner"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:layout_marginTop="@dimen/margin_16"/>
+
+	</com.google.android.material.appbar.AppBarLayout>
+
 	<androidx.recyclerview.widget.RecyclerView
 		android:id="@+id/recipes_recycler"
 		android:layout_width="match_parent"
