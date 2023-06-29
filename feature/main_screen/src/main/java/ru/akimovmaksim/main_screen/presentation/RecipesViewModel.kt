@@ -19,43 +19,67 @@ class RecipesViewModel(
 ) : ViewModel() {
 
 	private var fullRecipes: List<RecipeEntity>? = null
+	private var currentSearchResults: List<RecipeEntity>? = null
 
 	private val _state = MutableLiveData<RecipesViewModelState>(RecipesViewModelState.Initial)
 	val state: LiveData<RecipesViewModelState> = _state
 
 	fun loadRecipes() {
+		_state.value = RecipesViewModelState.Loading
 		viewModelScope.launch {
 			try {
 				val recipes = getRecipesUseCase.invoke()
-				_state.value = RecipesViewModelState.Content(recipes)
 				fullRecipes = recipes
-			} catch (e: Exception) {
+				currentSearchResults = recipes
+				_state.value = RecipesViewModelState.Content(recipes)
+			} catch (e: Throwable) {
 				_state.value = RecipesViewModelState.ConnectionError
 			}
 		}
 	}
 
 	fun sortRecipesByName() {
-		val currentState = _state.value as? RecipesViewModelState.Content ?: return
-		val sortedRecipes = sortByNameUseCase.invoke(currentState.recipes)
-		_state.value = RecipesViewModelState.Content(sortedRecipes)
+		currentSearchResults?.let {
+			val sortedRecipes = sortByNameUseCase.invoke(it)
+			_state.value = RecipesViewModelState.Content(sortedRecipes)
+		}
 	}
 
 	fun sortRecipesByDate() {
-		val currentState = _state.value as? RecipesViewModelState.Content ?: return
-		val sortedRecipes = sortByDateUseCase.invoke(currentState.recipes)
-		_state.value = RecipesViewModelState.Content(sortedRecipes)
+		currentSearchResults?.let {
+			val sortedRecipes = sortByDateUseCase.invoke(it)
+			_state.value = RecipesViewModelState.Content(sortedRecipes)
+		}
 	}
 
 	fun sortRecipesByDefault() {
-		_state.value = fullRecipes?.let { RecipesViewModelState.Content(recipes = it) }
+		currentSearchResults?.let {
+			_state.value = RecipesViewModelState.Content(recipes = it)
+		}
 	}
 
-	suspend fun searchRecipe(word: String) {
-		val currentState = _state.value as? RecipesViewModelState.Content ?: return
-		val searchResult = searchRecipesUseCase.invoke(
-			word = word,
-			recipes = currentState.recipes
-		)
+	fun searchRecipe(request: String) {
+		fullRecipes?.let {
+			val searchResult = searchRecipesUseCase.invoke(
+				request = request,
+				recipes = it
+			)
+
+			searchResult?.let { result ->
+				currentSearchResults = result.toList()
+				_state.value = RecipesViewModelState.Content(result.toList())
+				return
+			}
+
+			currentSearchResults = null
+			_state.value = RecipesViewModelState.EmptyContentState
+		}
+	}
+
+	fun setFullRecipesList() {
+		fullRecipes?.let {
+			currentSearchResults = it
+			_state.value = RecipesViewModelState.Content(it)
+		}
 	}
 }

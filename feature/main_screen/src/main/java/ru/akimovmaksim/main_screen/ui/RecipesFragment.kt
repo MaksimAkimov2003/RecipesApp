@@ -1,19 +1,20 @@
 package ru.akimovmaksim.main_screen.ui
 
+import android.content.Context
 import android.content.res.Resources.*
 import android.os.Bundle
-import android.util.Log
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
+import android.view.inputmethod.InputMethodManager
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
+import android.widget.TextView
 import android.widget.Toast
-import androidx.core.widget.doOnTextChanged
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.lifecycleScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 import ru.akimovmaksim.main_screen.R
 import ru.akimovmaksim.main_screen.databinding.RecipesFragmentBinding
@@ -21,7 +22,7 @@ import ru.akimovmaksim.main_screen.presentation.RecipesViewModel
 import ru.akimovmaksim.main_screen.presentation.RecipesViewModelState
 import ru.akimovmaksim.main_screen.ui.recycler.RecipesAdapter
 
-class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemSelectedListener {
+class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemSelectedListener, TextView.OnEditorActionListener {
 
 	private companion object {
 
@@ -50,7 +51,6 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-
 		binding = RecipesFragmentBinding.inflate(inflater, container, false)
 		return binding.root
 	}
@@ -60,14 +60,16 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 		setObserves()
 		loadRecipesList()
 		setAdapters()
-
+		setListeners()
 	}
 
 	private fun setListeners() {
-		binding.searchField.doOnTextChanged { word, _, _, _ ->
-			viewLifecycleOwner.lifecycleScope.launch {
-				delay(1000)
-				viewModel.searchRecipe(word.toString())
+		binding.run {
+			searchField.setOnEditorActionListener(this@RecipesFragment)
+			searchLayout.setEndIconOnClickListener {
+				searchField.text = null
+				viewModel.setFullRecipesList()
+				spinner.setSelection(0, false)
 			}
 		}
 	}
@@ -75,10 +77,8 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 	private fun setAdapters() {
 		with(binding) {
 			recipesRecycler.adapter = adapter
-
 			spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
 			spinner.adapter = spinnerAdapter
-			spinner.onItemSelectedListener = this@RecipesFragment
 		}
 	}
 
@@ -92,41 +92,97 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 
 	private fun handleState(state: RecipesViewModelState) {
 		when (state) {
-			is RecipesViewModelState.Initial         -> Unit
-			is RecipesViewModelState.Content         -> showContentState(state)
-			is RecipesViewModelState.ConnectionError -> showConnectionErrorState()
+			is RecipesViewModelState.Initial           -> Unit
+			is RecipesViewModelState.Loading           -> showLoadingState()
+			is RecipesViewModelState.Content           -> showContentState(state)
+			is RecipesViewModelState.ConnectionError   -> showConnectionErrorState()
+			is RecipesViewModelState.EmptyContentState -> showEmptyContentState()
 		}
 	}
 
+	private fun showLoadingState() {
+		with(binding) {
+			content.isVisible = false
+			progressBar.isVisible = true
+		}
+	}
+
+	private fun showEmptyContentState() {
+		with(binding) {
+			content.isVisible = true
+			progressBar.isVisible = false
+			recipesRecycler.isVisible = false
+		}
+		Toast.makeText(context, getString(ru.akimovmaksim.resources.R.string.empty_content), Toast.LENGTH_SHORT).show()
+	}
+
 	private fun showContentState(state: RecipesViewModelState.Content) {
-		Log.d("showContentState", binding.recipesRecycler.verticalScrollbarPosition.toString())
+		with(binding) {
+			content.isVisible = true
+			progressBar.isVisible = false
+			recipesRecycler.isVisible = true
+		}
 		adapter.submitList(state.recipes)
+		setItemSelectedListener()
 	}
 
 	private fun showConnectionErrorState() {
+		with(binding) {
+			content.isVisible = true
+			progressBar.isVisible = false
+		}
 		Toast.makeText(context, getString(ru.akimovmaksim.resources.R.string.error_message), Toast.LENGTH_SHORT).show()
+	}
+
+	private fun setItemSelectedListener() {
+		with(binding) {
+			spinner.onItemSelectedListener = this@RecipesFragment
+		}
 	}
 
 	override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
 		when (sortTypes.keys.toList()[position]) {
 			BY_DEFAULT_TAG -> {
-				Log.d("Spinner", "Default")
-//				viewModel.sortRecipesByDefault()
+				viewModel.sortRecipesByDefault()
+				scrollListToTop()
 			}
 
 			BY_NAME_TAG    -> {
-				Log.d("Spinner", "Name")
 				viewModel.sortRecipesByName()
+				scrollListToTop()
 			}
 
 			BY_DATE_TAG    -> {
-				Log.d("Spinner", "Date")
 				viewModel.sortRecipesByDate()
+				scrollListToTop()
 			}
 		}
 	}
 
 	override fun onNothingSelected(parent: AdapterView<*>?) {
 		throw NotFoundException("Selected item not found")
+	}
+
+	override fun onEditorAction(p0: TextView?, actionId: Int, p2: KeyEvent?): Boolean {
+		if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+			hideKeyboard()
+			viewModel.searchRecipe(binding.searchField.text.toString())
+			binding.spinner.setSelection(0, false)
+			return true
+		}
+		return false
+	}
+
+	private fun hideKeyboard() {
+		activity?.currentFocus?.let { view ->
+			val imm = activity?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
+			imm?.hideSoftInputFromWindow(view.windowToken, 0)
+		}
+	}
+
+	private fun scrollListToTop() {
+		binding.recipesRecycler.post {
+			binding.recipesRecycler.scrollToPosition(0)
+		}
 	}
 }

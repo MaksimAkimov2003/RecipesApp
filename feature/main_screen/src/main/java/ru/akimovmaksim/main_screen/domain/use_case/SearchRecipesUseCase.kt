@@ -4,24 +4,24 @@ import ru.akimovmaksim.main_screen.domain.entity.RecipeEntity
 
 class SearchRecipesUseCase {
 
-	suspend fun invoke(
-		word: String,
+	fun invoke(
+		request: String,
 		recipes: List<RecipeEntity>
-	): List<RecipeEntity>? {
-		val matches = mutableListOf<RecipeEntity>()
+	): Set<RecipeEntity>? {
+		val matches = mutableSetOf<RecipeEntity>()
 
 		for (recipe in recipes) {
-			if (recipe.name.contains(word)) {
+			if (recipe.name.contains(request)) {
 				matches.add(recipe)
 			}
 
 			recipe.description?.let {
-				if (it.contains(word)) {
+				if (it.contains(request)) {
 					matches.add(recipe)
 				}
 			}
 
-			if (recipe.instruction.contains(word)) {
+			if (recipe.instruction.contains(request)) {
 				matches.add(recipe)
 			}
 		}
