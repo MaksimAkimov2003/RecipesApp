@@ -5,6 +5,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
+import ru.akimovmaksim.details_screen.di.detailsModule
 import ru.akimovmaksim.main_screen.di.mainScreenModule
 import ru.akimovmaksim.recipesapp.di.appModule
 
@@ -18,7 +19,8 @@ class App : Application() {
 			androidContext(this@App)
 			modules(
 				appModule,
-				mainScreenModule
+				mainScreenModule,
+				detailsModule
 			)
 		}
 	}
