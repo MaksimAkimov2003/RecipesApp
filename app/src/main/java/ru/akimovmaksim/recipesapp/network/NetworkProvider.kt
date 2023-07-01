@@ -7,9 +7,9 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import ru.akimovmaksim.recipesapp.BuildConfig
 
-internal fun provideGson(): Gson = Gson()
+fun provideGson(): Gson = Gson()
 
-internal fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
+fun provideOkHttpClient(): OkHttpClient = OkHttpClient.Builder()
 	.addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
 	.build()
 

@@ -35,4 +35,6 @@ ext.Versions =
 		COROUTINE        : "1.6.2",
 
 		KOIN             : "3.3.2",
+
+		SLIDER_VIEW      : "1.3.9"
 	]

@@ -4,6 +4,7 @@ buildscript {
 	apply from: 'build-system/extensions/plugins.gradle'
 	repositories {
 		google()
+		jcenter()
 		mavenCentral()
 	}
 	dependencies {

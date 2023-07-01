@@ -20,8 +20,10 @@ dependencies {
 	implementation Dependencies.LIFECYCLE_RUNTIME
 	implementation Dependencies.KOIN_ANDROID
 	implementation Dependencies.KOIN_CORE
+	implementation Dependencies.CICERONE
 
 	implementation project(':feature:main_screen')
 	implementation project(':feature:details_screen')
 	implementation project(':core:resources')
+	implementation project(':core:ui')
 }

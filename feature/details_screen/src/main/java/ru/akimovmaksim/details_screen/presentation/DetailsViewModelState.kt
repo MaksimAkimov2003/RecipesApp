@@ -8,4 +8,6 @@ internal sealed class DetailsViewModelState {
 	data class Content(
 		val details: DetailsEntity
 	) : DetailsViewModelState()
+
+	object ConnectionError : DetailsViewModelState()
 }

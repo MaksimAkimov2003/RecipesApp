@@ -21,6 +21,8 @@ import ru.akimovmaksim.main_screen.databinding.RecipesFragmentBinding
 import ru.akimovmaksim.main_screen.presentation.RecipesViewModel
 import ru.akimovmaksim.main_screen.presentation.RecipesViewModelState
 import ru.akimovmaksim.main_screen.ui.recycler.RecipesAdapter
+import ru.akimovmaksim.ui.showConnectionErrorState
+import ru.akimovmaksim.ui.showLoadingState
 
 class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemSelectedListener, TextView.OnEditorActionListener {
 
@@ -34,7 +36,7 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 	private lateinit var binding: RecipesFragmentBinding
 
 	private val viewModel by inject<RecipesViewModel>()
-	private val adapter: RecipesAdapter by lazy { RecipesAdapter() }
+	private val adapter: RecipesAdapter by lazy { RecipesAdapter(::navigateToDetailsScreen) }
 
 	private val sortTypes: Map<String, String> by lazy {
 		mapOf(
@@ -48,6 +50,10 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 		ArrayAdapter(
 			requireContext(), android.R.layout.simple_spinner_item, sortTypes.values.toList()
 		)
+	}
+
+	private fun navigateToDetailsScreen(id: String) {
+		viewModel.navigateToDetailsScreen(id)
 	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -93,17 +99,18 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 	private fun handleState(state: RecipesViewModelState) {
 		when (state) {
 			is RecipesViewModelState.Initial           -> Unit
-			is RecipesViewModelState.Loading           -> showLoadingState()
+			is RecipesViewModelState.Loading           -> showLoadingState(
+				content = binding.content,
+				progressBar = binding.progressBar
+			)
 			is RecipesViewModelState.Content           -> showContentState(state)
-			is RecipesViewModelState.ConnectionError   -> showConnectionErrorState()
+			is RecipesViewModelState.ConnectionError   -> showConnectionErrorState(
+				content = binding.content,
+				progressBar = binding.progressBar,
+				context = context,
+				message = getString(ru.akimovmaksim.resources.R.string.error_message)
+			)
 			is RecipesViewModelState.EmptyContentState -> showEmptyContentState()
-		}
-	}
-
-	private fun showLoadingState() {
-		with(binding) {
-			content.isVisible = false
-			progressBar.isVisible = true
 		}
 	}
 
@@ -126,7 +133,7 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 		setItemSelectedListener()
 	}
 
-	private fun showConnectionErrorState() {
+	private fun showConnectionErrorStat() {
 		with(binding) {
 			content.isVisible = true
 			progressBar.isVisible = false
@@ -140,7 +147,7 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 		}
 	}
 
-	override fun onItemSelected(parent: AdapterView<*>?, view: View, position: Int, id: Long) {
+	override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 		when (sortTypes.keys.toList()[position]) {
 			BY_DEFAULT_TAG -> {
 				viewModel.sortRecipesByDefault()

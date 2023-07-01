@@ -8,7 +8,7 @@ import ru.akimovmaksim.main_screen.databinding.RecipeItemBinding
 import ru.akimovmaksim.main_screen.domain.entity.RecipeEntity
 
 class RecipesViewHolder(
-	private val binding: RecipeItemBinding
+	private val binding: RecipeItemBinding,
 ) : RecyclerView.ViewHolder(binding.root) {
 
 	companion object {
@@ -20,13 +20,14 @@ class RecipesViewHolder(
 		}
 	}
 
-	fun bind(recipe: RecipeEntity) {
+	fun bind(recipe: RecipeEntity, onClick: (id: String) -> Unit) {
 		binding.run {
 			Glide.with(root.context)
 				.load(recipe.images[0])
 				.into(recipeImage)
 			header.text = recipe.name
 			description.text = recipe.description
+			recipeItem.setOnClickListener { onClick.invoke(recipe.id) }
 		}
 	}
 

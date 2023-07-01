@@ -24,7 +24,8 @@ val mainScreenModule = module {
 			getRecipesUseCase = get(),
 			sortByDateUseCase = get(),
 			sortByNameUseCase = get(),
-			searchRecipesUseCase = get()
+			searchRecipesUseCase = get(),
+			router = get()
 		)
 	}
 }

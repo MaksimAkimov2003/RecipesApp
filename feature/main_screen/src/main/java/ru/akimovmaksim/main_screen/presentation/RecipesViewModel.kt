@@ -10,12 +10,14 @@ import ru.akimovmaksim.main_screen.domain.use_case.GetRecipesUseCase
 import ru.akimovmaksim.main_screen.domain.use_case.SearchRecipesUseCase
 import ru.akimovmaksim.main_screen.domain.use_case.SortByDateUseCase
 import ru.akimovmaksim.main_screen.domain.use_case.SortByNameUseCase
+import ru.akimovmaksim.main_screen.ui.navigation.RecipesRouter
 
 class RecipesViewModel(
 	private val getRecipesUseCase: GetRecipesUseCase,
 	private val sortByDateUseCase: SortByDateUseCase,
 	private val sortByNameUseCase: SortByNameUseCase,
-	private val searchRecipesUseCase: SearchRecipesUseCase
+	private val searchRecipesUseCase: SearchRecipesUseCase,
+	private val router: RecipesRouter
 ) : ViewModel() {
 
 	private var fullRecipes: List<RecipeEntity>? = null
@@ -81,5 +83,9 @@ class RecipesViewModel(
 			currentSearchResults = it
 			_state.value = RecipesViewModelState.Content(it)
 		}
+	}
+
+	fun navigateToDetailsScreen(id: String) {
+		router.navigateToDetailsScreen(id)
 	}
 }
