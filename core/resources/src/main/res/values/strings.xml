@@ -7,4 +7,9 @@
 	<string name="by_name">По названию</string>
 	<string name="by_date">По дате</string>
 	<string name="empty_content">По вашему запросу ничего не найдено</string>
+	<string name="instruction">Instruction:</string>
+	<string name="text_instruction">Preheat oven to 425 deg. Cut tomato slices. You don\'t want them to be too thin and yet you don\'t want them to be too thick either. Set aside. Cut puff pastry into small squares that are roughly about the same size as your tomato slices. Place some parchment paper on a cookie sheet. Lay the puff pastry square on the parchment paper. Add about 1 TBS +/– of Jack cheese (or provolone, gouda, havarti, mozzarella). Add some sliced/chopped onion. I had some green onion from the garden and use the white tip only. But, you can easily add regular onion. Place a tomato slice on top. Add a pinch of Italian seasoning. Season with salt and pepper, if you like. If you are going to add feta cheese later, you might not need to add any salt. Bake in a preheated 425 oven for about 10-12 minutes. Please check them... you want them golden brown and nicely puffed. Depending on the puff pastry size, the cooking time will vary. Mine took 12 minutes. Sprinkle feta on top if you like.
+	</string>
+	<string name="similar">Similar:</string>
+	<string name="download">Download</string>
 </resources>

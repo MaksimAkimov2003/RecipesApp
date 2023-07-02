@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import ru.akimovmaksim.details_screen.domain.use_case.GetDetailsUseCase
+import ru.akimovmaksim.details_screen.ui.navigation.DetailsRouter
 
 internal class DetailsViewModel(
-	private val getDetailsUseCase: GetDetailsUseCase
+	private val getDetailsUseCase: GetDetailsUseCase,
+	private val router: DetailsRouter
 ) : ViewModel() {
 
 	private val _state = MutableLiveData<DetailsViewModelState>(DetailsViewModelState.Initial)
@@ -25,4 +27,15 @@ internal class DetailsViewModel(
 		}
 	}
 
+	fun refreshScreen(id: String) {
+		router.refreshScreen(id)
+	}
+
+	fun navigateBack() {
+		router.exit()
+	}
+
+	fun navigateToImageScreen(url: String) {
+		router.navigateToImageScreen(url)
+	}
 }

@@ -1,49 +1,161 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:orientation="vertical">
+	android:layout_height="match_parent">
 
-	<com.google.android.material.appbar.AppBarLayout
+	<LinearLayout
 		android:layout_width="match_parent"
-		android:layout_height="?actionBarSize"
-		android:background="@color/dark_grey">
+		android:layout_height="match_parent"
+		android:orientation="vertical">
 
-		<ImageButton
-			android:id="@+id/back_button"
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
-			android:backgroundTint="@color/dark_grey"
-			android:src="@drawable/baseline_arrow_back_36"/>
-
-	</com.google.android.material.appbar.AppBarLayout>
-
-	<ScrollView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent">
-
-		<LinearLayout
+		<com.google.android.material.appbar.AppBarLayout
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
+			android:layout_height="?actionBarSize"
+			android:background="@color/dark_grey">
 
-			<com.smarteist.autoimageslider.SliderView
-				android:id="@+id/slider"
+			<ImageButton
+				android:id="@+id/back_button"
+				style="@style/BackButton"/>
+
+		</com.google.android.material.appbar.AppBarLayout>
+
+		<ScrollView
+			android:id="@+id/content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:fillViewport="true">
+
+			<androidx.constraintlayout.widget.ConstraintLayout
 				android:layout_width="match_parent"
-				android:layout_height="300dp"
-				app:sliderAnimationDuration="600"
-				app:sliderAutoCycleDirection="back_and_forth"
-				app:sliderIndicatorAnimationDuration="600"
-				app:sliderIndicatorEnabled="true"
-				app:sliderIndicatorGravity="center_horizontal|bottom"
-				app:sliderIndicatorOrientation="horizontal"
-				app:sliderScrollTimeInSec="1"
-				app:sliderIndicatorPadding="@dimen/margin_4"
-				app:sliderIndicatorSelectedColor="@color/white"
-				app:sliderIndicatorUnselectedColor="@color/light_grey"/>
+				android:layout_height="wrap_content">
 
-		</LinearLayout>
+				<com.smarteist.autoimageslider.SliderView
+					android:id="@+id/slider"
+					android:layout_width="@dimen/large_image_size"
+					android:layout_height="@dimen/large_image_size"
+					android:layout_marginTop="@dimen/margin_16"
+					app:sliderAnimationDuration="600"
+					app:sliderAutoCycleDirection="back_and_forth"
+					app:sliderIndicatorAnimationDuration="600"
+					app:sliderIndicatorEnabled="true"
+					app:sliderIndicatorGravity="center_horizontal|bottom"
+					app:sliderIndicatorOrientation="horizontal"
+					app:sliderScrollTimeInSec="1"
+					app:sliderIndicatorPadding="@dimen/margin_4"
+					app:sliderIndicatorSelectedColor="@color/white"
+					app:sliderIndicatorUnselectedColor="@color/light_grey"
+					app:layout_constraintTop_toBottomOf="@+id/ratingBar"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent">
+				</com.smarteist.autoimageslider.SliderView>
+				<TextView
+					android:id="@+id/tittle"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginHorizontal="@dimen/margin_16"
+					android:layout_marginTop="@dimen/margin_16"
+					android:textSize="@dimen/text_size_24"
+					app:layout_constraintTop_toTopOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					tools:text="@string/test_name"
+					style="@style/HeaderText"/>
+				<RatingBar
+					android:id="@+id/ratingBar"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginHorizontal="@dimen/margin_4"
+					android:layout_marginTop="@dimen/margin_16"
+					android:progressTint="@color/yellow"
+					android:secondaryProgressTint="@color/yellow"
+					android:progressBackgroundTint="@color/light_grey"
+					android:numStars="5"
+					app:layout_constraintTop_toBottomOf="@+id/tittle"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					style="?android:attr/ratingBarStyleIndicator"/>
 
-	</ScrollView>
+				<TextView
+					android:id="@+id/pictures_count"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/margin_4"
+					app:layout_constraintTop_toBottomOf="@+id/slider"
+					app:layout_constraintEnd_toEndOf="@+id/slider"
+					app:layout_constraintStart_toStartOf="@+id/slider"
+					style="@style/SimpleText"/>
+				<TextView
+					android:id="@+id/description"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginHorizontal="@dimen/margin_16"
+					android:layout_marginTop="@dimen/margin_16"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/pictures_count"
+					tools:text="@string/test_description"
+					style="@style/SimpleText"/>
+				<TextView
+					android:id="@+id/instruction_tittle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/margin_16"
+					android:textSize="@dimen/text_size_20"
+					android:text="@string/instruction"
+					app:layout_constraintTop_toBottomOf="@+id/description"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					style="@style/HeaderText"/>
+				<TextView
+					android:id="@+id/instruction"
+					android:layout_width="0dp"
+					android:layout_height="wrap_content"
+					android:layout_marginHorizontal="@dimen/margin_16"
+					android:layout_marginTop="@dimen/margin_8"
+					app:layout_constraintTop_toBottomOf="@+id/instruction_tittle"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					tools:text="@string/text_instruction"
+					style="@style/SimpleText"/>
 
-</LinearLayout>
+				<androidx.recyclerview.widget.RecyclerView
+					android:id="@+id/similar_recycler"
+					android:layout_width="match_parent"
+					android:layout_height="wrap_content"
+					android:layout_marginHorizontal="@dimen/margin_16"
+					android:layout_marginTop="@dimen/margin_16"
+					android:orientation="horizontal"
+					app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+					app:layout_constraintStart_toStartOf="parent"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintTop_toBottomOf="@+id/similar_tittle"
+					tools:listitem="@layout/recipe_item"/>
+				<TextView
+					android:id="@+id/similar_tittle"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_marginTop="@dimen/margin_16"
+					android:text="@string/similar"
+					android:textSize="@dimen/text_size_20"
+					app:layout_constraintTop_toBottomOf="@+id/instruction"
+					app:layout_constraintEnd_toEndOf="parent"
+					app:layout_constraintStart_toStartOf="parent"
+					style="@style/HeaderText"/>
+
+			</androidx.constraintlayout.widget.ConstraintLayout>
+
+		</ScrollView>
+
+	</LinearLayout>
+
+	<ProgressBar
+		android:id="@+id/progress_bar"
+		android:layout_width="@dimen/size_88"
+		android:layout_height="@dimen/size_88"
+		android:layout_gravity="center"
+		android:indeterminateTint="@color/dark_grey"
+		android:visibility="invisible"/>
+</FrameLayout>

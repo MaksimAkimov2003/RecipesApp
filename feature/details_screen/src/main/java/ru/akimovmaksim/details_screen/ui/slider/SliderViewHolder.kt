@@ -19,11 +19,16 @@ class SliderViewHolder(
 		}
 	}
 
-	fun bind(images: List<String>, position: Int) {
+	fun bind(
+		images: List<String>,
+		position: Int,
+		onClick: (imageUrl: String) -> Unit
+	) {
 		with(binding) {
 			Glide.with(root.context)
 				.load(images[position])
 				.into(image)
+			image.setOnClickListener { onClick.invoke(images[position]) }
 		}
 	}
 }

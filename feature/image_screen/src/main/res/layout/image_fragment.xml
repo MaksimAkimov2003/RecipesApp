@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:orientation="vertical">
+
+	<com.google.android.material.appbar.AppBarLayout
+		android:layout_width="match_parent"
+		android:layout_height="?actionBarSize"
+		android:background="@color/dark_grey">
+
+		<ImageButton
+			android:id="@+id/back_button"
+			style="@style/BackButton"/>
+
+	</com.google.android.material.appbar.AppBarLayout>
+
+	<ImageView
+		android:id="@+id/image"
+		android:layout_width="@dimen/large_image_size"
+		android:layout_height="@dimen/large_image_size"
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_16"
+		android:scaleType="centerCrop"
+		tools:src="@drawable/test_image"/>
+
+	<Button
+		android:id="@+id/download_button"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center"
+		android:layout_marginTop="@dimen/margin_16"
+		android:text="@string/download"
+		android:backgroundTint="@color/dark_grey"/>
+</LinearLayout>

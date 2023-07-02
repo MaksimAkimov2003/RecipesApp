@@ -47,5 +47,5 @@ ext.Dependencies =
 		KOIN_ANDROID           : "io.insert-koin:koin-android:${Versions.KOIN}",
 		KOIN_CORE              : "io.insert-koin:koin-core:${Versions.KOIN}",
 
-		SLIDER_VIEW            : "com.github.smarteist:autoimageslider:${Versions.SLIDER_VIEW}"
+		SLIDER_VIEW            : "com.github.smarteist:autoimageslider:${Versions.SLIDER_VIEW}",
 	]

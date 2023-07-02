@@ -11,12 +11,16 @@ import ru.akimovmaksim.details_screen.R
 import ru.akimovmaksim.details_screen.databinding.DetailsFragmentBinding
 import ru.akimovmaksim.details_screen.presentation.DetailsViewModel
 import ru.akimovmaksim.details_screen.presentation.DetailsViewModelState
+import ru.akimovmaksim.details_screen.ui.recycler.SimilarAdapter
 import ru.akimovmaksim.details_screen.ui.slider.SliderAdapter
+import ru.akimovmaksim.ui.showConnectionErrorState
+import ru.akimovmaksim.ui.showLoadingState
 
 class DetailsFragment : Fragment(R.layout.details_fragment) {
 	companion object {
 
 		private const val DETAILS_FRAGMENT_KEY = "DETAILS_FRAGMENT_KEY"
+		private const val SCROLL_TIME = 3
 
 		fun newInstance(id: String) = DetailsFragment().apply {
 			val bundle = Bundle()
@@ -28,6 +32,11 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 	private lateinit var binding: DetailsFragmentBinding
 
 	private val viewModel by inject<DetailsViewModel>()
+	private val recyclerAdapter by lazy { SimilarAdapter(::onItemClick) }
+
+	private fun onItemClick(id: String) {
+		viewModel.refreshScreen(id)
+	}
 
 	override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
 		binding = DetailsFragmentBinding.inflate(inflater, container, false)
@@ -37,7 +46,17 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 	override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 		super.onViewCreated(view, savedInstanceState)
 		setObserves()
+		setAdapters()
+		setListeners()
 		getDetails()
+	}
+
+	private fun setListeners() {
+		binding.backButton.setOnClickListener { viewModel.navigateBack() }
+	}
+
+	private fun setAdapters() {
+		binding.similarRecycler.adapter = recyclerAdapter
 	}
 
 	private fun setObserves() {
@@ -47,9 +66,17 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 	private fun handleState(state: DetailsViewModelState) {
 		when (state) {
 			is DetailsViewModelState.Initial         -> Unit
-			is DetailsViewModelState.Loading         -> Unit
+			is DetailsViewModelState.Loading         -> showLoadingState(
+				content = binding.content,
+				progressBar = binding.progressBar
+			)
 			is DetailsViewModelState.Content         -> showContentState(state)
-			is DetailsViewModelState.ConnectionError -> Unit
+			is DetailsViewModelState.ConnectionError -> showConnectionErrorState(
+				content = binding.content,
+				progressBar = binding.progressBar,
+				context = context,
+				message = getString(ru.akimovmaksim.resources.R.string.error_message)
+			)
 		}
 	}
 
@@ -60,18 +87,37 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 	}
 
 	private fun showContentState(state: DetailsViewModelState.Content) {
+		binding.let {
+			it.tittle.text = state.details.name
+			it.description.text = state.details.description
+			it.ratingBar.rating = state.details.difficulty.toFloat()
+			it.instruction.text = state.details.instructions
+			it.picturesCount.text = buildString {
+				append("pictures count: ")
+				append(state.details.images.size)
+			}
+		}
 		showSlider(state.details.images)
+		showRecycler(state)
+	}
+
+	private fun showRecycler(state: DetailsViewModelState.Content) {
+		recyclerAdapter.submitList(state.details.similarRecipes)
 	}
 
 	private fun showSlider(images: List<String>) {
-		val sliderAdapter = SliderAdapter(images)
+		val sliderAdapter = SliderAdapter(images, ::onImageClick)
 
 		with(binding.slider) {
 			autoCycleDirection = SliderView.LAYOUT_DIRECTION_LTR
 			setSliderAdapter(sliderAdapter)
-			scrollTimeInSec = 3
+			scrollTimeInSec = SCROLL_TIME
 			isAutoCycle = true
 			startAutoCycle()
 		}
+	}
+
+	private fun onImageClick(imageUrl: String) {
+		viewModel.navigateToImageScreen(imageUrl)
 	}
 }

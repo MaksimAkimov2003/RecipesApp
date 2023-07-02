@@ -1,6 +1,6 @@
 package ru.akimovmaksim.details_screen.domain.entity
 
-internal data class DetailsEntity(
+data class DetailsEntity(
 	val id: String,
 	val name: String,
 	val images: List<String>,

@@ -24,6 +24,7 @@ dependencies {
 
 	implementation project(':feature:main_screen')
 	implementation project(':feature:details_screen')
+	implementation project(':feature:image_screen')
 	implementation project(':core:resources')
 	implementation project(':core:ui')
 }

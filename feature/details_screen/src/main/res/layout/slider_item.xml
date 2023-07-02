@@ -7,8 +7,8 @@
 
 	<ImageView
 		android:id="@+id/image"
-		android:layout_width="match_parent"
-		android:layout_height="240dp"
+		android:layout_width="@dimen/large_image_size"
+		android:layout_height="@dimen/large_image_size"
 		android:scaleType="centerCrop"
 		tools:src="@drawable/test_image"/>
 

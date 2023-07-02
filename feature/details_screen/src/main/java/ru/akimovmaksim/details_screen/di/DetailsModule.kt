@@ -15,7 +15,8 @@ val detailsModule = module {
 	factory { GetDetailsUseCase(repository = get()) }
 	viewModel {
 		DetailsViewModel(
-			getDetailsUseCase = get()
+			getDetailsUseCase = get(),
+			router = get()
 		)
 	}
 }
