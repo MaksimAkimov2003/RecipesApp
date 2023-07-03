@@ -65,10 +65,6 @@
 
 	<ProgressBar
 		android:id="@+id/progress_bar"
-		android:layout_width="@dimen/size_88"
-		android:layout_height="@dimen/size_88"
-		android:layout_gravity="center"
-		android:indeterminateTint="@color/dark_grey"
-		android:visibility="invisible"/>
+		style="@style/ProgressBar"/>
 
 </FrameLayout>

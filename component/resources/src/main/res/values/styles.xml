@@ -28,4 +28,13 @@
 		<item name="android:backgroundTint">@color/dark_grey</item>
 		<item name="android:src">@drawable/baseline_arrow_back_36</item>
 	</style>
+
+	<style name="ProgressBar"
+		parent="Widget.AppCompat.ProgressBar">
+		<item name="android:layout_width">@dimen/size_88</item>
+		<item name="android:layout_height">@dimen/size_88</item>
+		<item name="android:layout_gravity">center</item>
+		<item name="android:indeterminateTint">@color/dark_grey</item>
+		<item name="android:visibility">invisible</item>
+	</style>
 </resources>
