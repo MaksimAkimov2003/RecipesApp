@@ -18,7 +18,8 @@ import ru.akimovmaksim.recipesapp.network.provideOkHttpClient
 import ru.akimovmaksim.recipesapp.network.provideRetrofit
 
 val appModule = module {
-	single { provideGson() }
+
+single { provideGson() }
 	single { provideOkHttpClient() }
 	single { provideRetrofit(gson = get(), okHttpClient = get()) }
 

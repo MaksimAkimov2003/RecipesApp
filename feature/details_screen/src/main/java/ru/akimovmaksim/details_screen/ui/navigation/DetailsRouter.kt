@@ -2,7 +2,7 @@ package ru.akimovmaksim.details_screen.ui.navigation
 
 interface DetailsRouter {
 
-	fun refreshScreen(id: String)
+	fun navigateToDetailsScreen(id: String)
 
 	fun exit()
 

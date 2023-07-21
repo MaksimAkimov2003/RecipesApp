@@ -1,8 +1,5 @@
 package ru.akimovmaksim.image_screen.ui
 
-import android.Manifest
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +13,7 @@ import ru.akimovmaksim.image_screen.R
 import ru.akimovmaksim.image_screen.databinding.ImageFragmentBinding
 import ru.akimovmaksim.image_screen.presentation.ImageViewModel
 import ru.akimovmaksim.image_screen.presentation.ImageViewModelState
+import ru.akimovmaksim.ui.hideLoadingState
 import ru.akimovmaksim.ui.showConnectionErrorState
 import ru.akimovmaksim.ui.showLoadingState
 
@@ -54,26 +52,22 @@ class ImageFragment : Fragment(R.layout.image_fragment) {
 	}
 
 	private fun downLoadImage() {
-		url?.let { it1 ->
-			viewModel.downloadImage(
-				it1,
-				requireContext().contentResolver,
-				"${System.currentTimeMillis()}"
-			)
+		url?.let {
+			viewModel.downloadImage(it)
 		}
 	}
 
-	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-
-		if (requestCode != EXTERNAL_STORAGE_PERMISSION_CODE) return
-
-		for (result in grantResults) {
-			if (result != PackageManager.PERMISSION_GRANTED) return
-		}
-
-		downLoadImage()
-	}
+//	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+//		super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+//
+//		if (requestCode != EXTERNAL_STORAGE_PERMISSION_CODE) return
+//
+//		for (result in grantResults) {
+//			if (result != PackageManager.PERMISSION_GRANTED) return
+//		}
+//
+//		downLoadImage()
+//	}
 
 	private fun getArgument() {
 		arguments?.getString(IMAGE_FRAGMENT_KEY)?.let {
@@ -81,19 +75,19 @@ class ImageFragment : Fragment(R.layout.image_fragment) {
 		}
 	}
 
-	private fun checkPermissions() {
-		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-			downLoadImage()
-		} else {
-			requestPermissions(
-				arrayOf(
-					Manifest.permission.WRITE_EXTERNAL_STORAGE,
-					Manifest.permission.READ_EXTERNAL_STORAGE
-				),
-				EXTERNAL_STORAGE_PERMISSION_CODE
-			)
-		}
-	}
+//	private fun checkPermissions() {
+//		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//			downLoadImage()
+//		} else {
+//			requestPermissions(
+//				arrayOf(
+//					Manifest.permission.WRITE_EXTERNAL_STORAGE,
+//					Manifest.permission.READ_EXTERNAL_STORAGE
+//				),
+//				EXTERNAL_STORAGE_PERMISSION_CODE
+//			)
+//		}
+//	}
 
 	private fun setObserves() {
 		viewModel.state.observe(viewLifecycleOwner, ::handleState)
@@ -106,13 +100,17 @@ class ImageFragment : Fragment(R.layout.image_fragment) {
 				content = binding.content,
 				progressBar = binding.progressBar
 			)
+
 			is ImageViewModelState.Complete        -> showCompleteState()
-			is ImageViewModelState.ConnectionError -> showConnectionErrorState(
-				content = binding.content,
-				progressBar = binding.progressBar,
-				context = context,
-				message = getString(ru.akimovmaksim.resources.R.string.error_message)
-			)
+
+			is ImageViewModelState.ConnectionError -> {
+				hideLoadingState(binding.content, binding.progressBar)
+				context?.showConnectionErrorState(
+					content = binding.content,
+					progressBar = binding.progressBar,
+					message = getString(ru.akimovmaksim.resources.R.string.error_message)
+				)
+			}
 		}
 	}
 
@@ -137,7 +135,7 @@ class ImageFragment : Fragment(R.layout.image_fragment) {
 		with(binding) {
 			backButton.setOnClickListener { viewModel.navigateBack() }
 			downloadButton.setOnClickListener {
-				checkPermissions()
+				downLoadImage()
 			}
 		}
 	}

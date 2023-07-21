@@ -13,6 +13,7 @@ import ru.akimovmaksim.details_screen.presentation.DetailsViewModel
 import ru.akimovmaksim.details_screen.presentation.DetailsViewModelState
 import ru.akimovmaksim.details_screen.ui.recycler.SimilarAdapter
 import ru.akimovmaksim.details_screen.ui.slider.SliderAdapter
+import ru.akimovmaksim.ui.hideLoadingState
 import ru.akimovmaksim.ui.showConnectionErrorState
 import ru.akimovmaksim.ui.showLoadingState
 
@@ -66,17 +67,22 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 	private fun handleState(state: DetailsViewModelState) {
 		when (state) {
 			is DetailsViewModelState.Initial         -> Unit
-			is DetailsViewModelState.Loading         -> showLoadingState(
-				content = binding.content,
-				progressBar = binding.progressBar
-			)
+			is DetailsViewModelState.Loading         ->
+				showLoadingState(
+					content = binding.content,
+					progressBar = binding.progressBar
+				)
+
 			is DetailsViewModelState.Content         -> showContentState(state)
-			is DetailsViewModelState.ConnectionError -> showConnectionErrorState(
-				content = binding.content,
-				progressBar = binding.progressBar,
-				context = context,
-				message = getString(ru.akimovmaksim.resources.R.string.error_message)
-			)
+
+			is DetailsViewModelState.ConnectionError -> {
+				hideLoadingState(binding.content, binding.progressBar)
+				context?.showConnectionErrorState(
+					content = binding.content,
+					progressBar = binding.progressBar,
+					message = getString(ru.akimovmaksim.resources.R.string.error_message)
+				)
+			}
 		}
 	}
 
@@ -88,6 +94,7 @@ class DetailsFragment : Fragment(R.layout.details_fragment) {
 
 	private fun showContentState(state: DetailsViewModelState.Content) {
 		binding.let {
+			hideLoadingState(it.content, it.progressBar)
 			it.tittle.text = state.details.name
 			it.description.text = state.details.description
 			it.ratingBar.rating = state.details.difficulty.toFloat()

@@ -7,7 +7,9 @@ internal class GetDetailsUseCase(
 	private val repository: DetailsRepository
 ) {
 
-	suspend fun invoke(recipeId: String): DetailsEntity {
-		return repository.searchDetailsFromApi(recipeId)
+	suspend fun invoke(recipeId: String): Result<DetailsEntity> {
+		return repository.runCatching {
+			this.searchDetailsFromApi(recipeId)
+		}
 	}
 }

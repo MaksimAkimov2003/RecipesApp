@@ -7,7 +7,9 @@ class GetRecipesUseCase(
 	private val repository: RecipesRepository
 ) {
 
-	suspend fun invoke(): List<RecipeEntity> {
-		return repository.getRecipesFromNetwork()
+	suspend fun invoke(): Result<List<RecipeEntity>> {
+		return repository.runCatching {
+			this.getRecipesFromNetwork()
+		}
 	}
 }

@@ -103,13 +103,14 @@ class RecipesFragment : Fragment(R.layout.recipes_fragment), AdapterView.OnItemS
 				content = binding.content,
 				progressBar = binding.progressBar
 			)
+
 			is RecipesViewModelState.Content           -> showContentState(state)
-			is RecipesViewModelState.ConnectionError   -> showConnectionErrorState(
+			is RecipesViewModelState.ConnectionError   -> context?.showConnectionErrorState(
 				content = binding.content,
 				progressBar = binding.progressBar,
-				context = context,
 				message = getString(ru.akimovmaksim.resources.R.string.error_message)
 			)
+
 			is RecipesViewModelState.EmptyContentState -> showEmptyContentState()
 		}
 	}

@@ -29,12 +29,15 @@ class RecipesViewModel(
 	fun loadRecipes() {
 		_state.value = RecipesViewModelState.Loading
 		viewModelScope.launch {
-			try {
-				val recipes = getRecipesUseCase.invoke()
-				fullRecipes = recipes
-				currentSearchResults = recipes
-				_state.value = RecipesViewModelState.Content(recipes)
-			} catch (e: Throwable) {
+			val recipes = getRecipesUseCase.invoke()
+
+			recipes.onSuccess {
+				fullRecipes = it
+				currentSearchResults = it
+				_state.value = RecipesViewModelState.Content(it)
+			}
+
+			recipes.onFailure {
 				_state.value = RecipesViewModelState.ConnectionError
 			}
 		}

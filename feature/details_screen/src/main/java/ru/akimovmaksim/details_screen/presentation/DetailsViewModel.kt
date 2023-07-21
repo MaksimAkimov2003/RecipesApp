@@ -1,5 +1,6 @@
 package ru.akimovmaksim.details_screen.presentation
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,18 +18,23 @@ internal class DetailsViewModel(
 	val state: LiveData<DetailsViewModelState> = _state
 
 	fun getRecipeDetails(recipeId: String) {
+		_state.value = DetailsViewModelState.Loading
 		viewModelScope.launch {
-			try {
-				val result = getDetailsUseCase.invoke(recipeId)
-				_state.value = DetailsViewModelState.Content(result)
-			} catch (e: Throwable) {
+			val result = getDetailsUseCase.invoke(recipeId)
+
+			result.onSuccess {
+				_state.value = DetailsViewModelState.Content(it)
+				Log.e("STATE VALUE", _state.value.toString())
+			}
+
+			result.onFailure {
 				_state.value = DetailsViewModelState.ConnectionError
 			}
 		}
 	}
 
 	fun refreshScreen(id: String) {
-		router.refreshScreen(id)
+		router.navigateToDetailsScreen(id)
 	}
 
 	fun navigateBack() {

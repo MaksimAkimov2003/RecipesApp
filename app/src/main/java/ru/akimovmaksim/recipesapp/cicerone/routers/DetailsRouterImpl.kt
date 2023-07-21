@@ -10,8 +10,8 @@ class DetailsRouterImpl(
 	private val router: Router
 ) : DetailsRouter {
 
-	override fun refreshScreen(id: String) {
-		router.replaceScreen(FragmentScreen { DetailsFragment.newInstance(id) })
+	override fun navigateToDetailsScreen(id: String) {
+		router.navigateTo(FragmentScreen { DetailsFragment.newInstance(id) })
 	}
 
 	override fun exit() {
